@@ -1,9 +1,9 @@
 #!/bin/bash
-# Setup script cho AI20K project
+# Setup script cho MT-01 · The Odyssey
 
 set -e
 
-echo "=== AI20K Project Setup ==="
+echo "=== MT-01 · The Odyssey — Setup ==="
 
 # Check Python version
 python3 -c "import sys; assert sys.version_info >= (3, 11), 'Python 3.11+ required'"

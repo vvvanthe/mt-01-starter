@@ -1,6 +1,6 @@
 # Hướng dẫn cho agent trong repo này
 
-Repo này là bài tập của khoá **Đào tạo mentor mới** (AI20K). Đề bài: `docs/de-bai.md`.
+Repo này là bài tập của khoá **Đào tạo mentor mới — The Odyssey**. Đề bài: `docs/de-bai.md`.
 Những gì đã lược khỏi template và vì sao: `DA-LUOC.md`.
 
 Quy tắc đầy đủ: [`.agents/rules/hoc-cung-ai.md`](.agents/rules/hoc-cung-ai.md) — đọc trước khi

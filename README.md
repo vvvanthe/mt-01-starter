@@ -1,213 +1,145 @@
-# 🤖 AI20K Agent Template
+# MT-01 — Repo khởi đầu · The Odyssey
 
-Template chính thức cho học viên **VinUni AI20K Build Phase** — cung cấp sẵn cấu trúc dự án, code mẫu, và hướng dẫn kỹ thuật chi tiết để xây dựng AI Agent đạt điểm cao (35+/50).
+Repo khởi đầu cho khoá **Đào tạo mentor mới — The Odyssey**. Bạn build repo này suốt 15 buổi,
+từ con số không đến deploy thật, bằng cách **làm việc cùng AI agent** ngay trong repo.
 
-> 📖 **Technical Guidebook (xem online):** [hailoc12.github.io/ai20k-technical-guidebook](https://hailoc12.github.io/ai20k-technical-guidebook/)
+Bạn **không cần biết code**. Bạn cần chạy được vài lệnh và **đọc được kết quả**.
 
-## 🎯 Template này dùng để làm gì?
+| | |
+|---|---|
+| **Đề bài** | [`docs/de-bai.md`](docs/de-bai.md) — MT-01, hệ thống AI agent chuẩn hóa chất lượng đào tạo |
+| **Quy tắc cho agent** | [`CLAUDE.md`](CLAUDE.md) · [`.agents/rules/hoc-cung-ai.md`](.agents/rules/hoc-cung-ai.md) |
+| **Repo này đã lược gì** | [`DA-LUOC.md`](DA-LUOC.md) — 94 file → 64 file, kèm lý do từng mục |
 
-Khi tham gia AI20K Build Phase, mỗi đội cần xây dựng một AI Agent hoàn chỉnh — từ kiến trúc, code, test, đến deploy. Thay vì bắt đầu từ con số không, template này cung cấp:
+---
 
-- **Cấu trúc thư mục chuẩn** — đã được thiết kế theo best practices (separation of concerns)
-- **Code mẫu** cho các phần cốt lõi: LangGraph agent, FastAPI API, config, schemas
-- **Docker + CI/CD sẵn** — Dockerfile multi-stage, GitHub Actions workflow
-- **Hướng dẫn kỹ thuật 10 chương** — từ clone template đến nộp bài Demo Day
-- **Checklist 10 deliverables** — đảm bảo không bỏ sót yêu cầu BTC
-- **AI Usage Logging tự động** — Pre-configured hooks cho Claude Code, Cursor, Codex, Gemini CLI, Antigravity, và GitHub Copilot
+## Chạy lần đầu
 
-## ⚡ Quick Start
-
-### Bước 1: Fork hoặc Clone
+Cần sẵn: Python 3.12 (hoặc 3.11), Git. Kiểm: `python3 --version`.
 
 ```bash
-# Clone template
-git clone https://github.com/hailoc12/ai20k-agent-template.git team-YOUR_TEAM_NAME
-cd team-YOUR_TEAM_NAME
-
-# Xóa git history cũ và khởi tạo lại
-rm -rf .git
-git init
-git add .
-git commit -m "feat: khởi tạo dự án từ template"
+python3 -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+make run
 ```
 
-### Bước 2: Setup môi trường
+Mở `http://localhost:8000/docs` — Swagger UI. Mở tab terminal thứ hai, giữ server chạy:
 
 ```bash
-# Tạo virtual environment
-python3.11 -m venv .venv
-source .venv/bin/activate
-
-# Cài dependencies
-pip install -e ".[dev]"
-
-# Cấu hình API keys
-cp .env.example .env
-# Mở .env và thêm OPENAI_API_KEY của bạn
+curl -s localhost:8000/health       # phải ra {"status":"ok", ...}
 ```
 
-### Bước 3: Cài AI Logging Hooks
+**Swagger UI là giao diện bấm được để thử API.** Chọn một endpoint → **Try it out** → **Execute**.
+Đây là công cụ bạn dùng lại suốt 6 tuần để duyệt API của đội **mà không cần viết code**.
+
+> ⚠️ **Đừng làm theo lệnh cài trong README của template gốc.** Nó bảo
+> `pip install -e ".[dev]"`, nhưng repo **không có `pyproject.toml`** nên lệnh đó lỗi. Dùng
+> `pip install -r requirements.txt`. Đây là chỗ tài liệu lệch code đầu tiên bạn gặp — và là bài
+> học của buổi 02, không phải lỗi của bạn.
+
+---
+
+## `make test` sẽ ra đỏ. Đó là đúng.
 
 ```bash
-# Linux / macOS / Git Bash
+make test        # 2 passed, 3 errors
+```
+
+Template có `pytest-asyncio` trong `requirements.txt` nhưng **không file nào đặt `asyncio_mode`**,
+nên fixture async không được xử lý. **Bạn sẽ tự sửa ở buổi 02** — một file `pytest.ini` ba dòng,
+làm cùng agent. Sau đó: `5 passed`.
+
+Nhận một repo đã xanh sẵn thì mất bài học quan trọng nhất của buổi 02:
+**CI xanh là thứ bạn làm ra, không phải thứ bạn được phát.**
+
+---
+
+## Cách đọc một thông báo lỗi — kỹ năng dùng lại suốt khoá
+
+Tìm **dòng `ERROR`**, hoặc **dòng cuối của khối `Traceback`**. **Bỏ qua `[notice]` và `WARNING`.**
+
+```
+Obtaining file:///...
+ERROR: ... neither 'setup.py' nor 'pyproject.toml' found.   ← dòng này
+[notice] A new release of pip is available: 24.0 -> 26.2.2  ← không phải dòng này
+```
+
+Câu "đọc dòng cuối" chỉ đúng với Traceback của Python. `pip` in `[notice]` **sau** dòng lỗi — ai
+đọc đúng dòng cuối cùng sẽ gặp lời khuyên nâng cấp pip, không gặp lỗi.
+
+Đội của bạn sẽ gửi ảnh chụp một màn hình đầy chữ đỏ. Câu hỏi đúng là **"dòng ERROR viết gì?"**,
+không phải "em thử lại chưa". Và yêu cầu họ **dán chữ, đừng gửi ảnh** — chữ thì dán được cho agent.
+
+---
+
+## Cấu trúc
+
+```
+docs/de-bai.md           đề bài xuyên suốt MT-01
+data/
+  rubric.yaml            rubric 6 tiêu chí — dữ liệu riêng của đề. Cả 6 đang da_cai: false
+  plo.md                 chuẩn đầu ra chương trình (mẫu)
+  de-cuong/              đề cương tập, CÓ LỖI CỐ Ý ở cả 6 tiêu chí
+src/
+  agents/                graph · state · nodes/ · tools/   → buổi 04
+  api/ · models/         routes, Pydantic schema            → buổi 08
+  services/llm.py        gọi model                          → buổi 04, 06
+  config.py · main.py    cấu hình, entry point              → buổi 02
+tests/                   test_agents/ · test_api/           → buổi 10
+Dockerfile · docker-compose.yml · .github/workflows/        → buổi 12
+scripts/                 AI logging hooks, deliverable #4   → buổi 02
+ARCHITECTURE.md          deliverable #3                     → buổi 03
+JOURNAL.md               deliverable #8 — ghi từ ngày đầu
+WORKLOG.md               deliverable #9
+eval/                    deliverable #10                    → buổi 10
+presentation/            deliverable #7                     → buổi 13
+```
+
+`eval/` và `presentation/` đang rỗng. **Đừng xoá** — đó là hai deliverable mà **82% và 64%** đội
+cohort trước thiếu, và là hai chỗ dễ ghi điểm nhất tính theo công sức.
+
+---
+
+## AI logging — deliverable #4, một lệnh
+
+```bash
 bash scripts/setup_hooks.sh
-
-# Windows PowerShell
-# powershell -ExecutionPolicy Bypass -File scripts\setup_hooks.ps1
 ```
 
-Hooks tự động log mọi AI prompt khi dùng Claude Code, Cursor, Codex, Gemini CLI, Antigravity, hoặc GitHub Copilot. Không cần thao tác thủ công.
+Hook tự log prompt vào `.ai-log/session.jsonl` và submit khi `git push`. Có sẵn cho Claude Code,
+Cursor, Codex, Gemini CLI, Copilot, Antigravity.
 
-### Bước 4: Chạy server
+**Đừng gọi tay** `scripts/log_*` — hook đã tự chạy, gọi tay tạo log giả. Hook báo lỗi thì **đừng**
+bypass bằng `--no-verify`: push được nhưng log không được submit.
 
-```bash
-# Chạy FastAPI backend
-uvicorn src.main:app --reload --port 8000
+> 🔴 **Người dạy phải xử lý trước khi phát cho học viên.** `.env.example` đặt sẵn
+> `AI_LOG_SERVER=https://ai-logs.note.transformerlabs.ai/api/ingest` — đó là **máy chủ chấm điểm
+> của AI20K**, chương trình mà template này sinh ra để dùng. The Odyssey cần **endpoint riêng**,
+> hoặc để trống biến đó nếu chưa có hệ thống thu log. Để nguyên nghĩa là gửi prompt của học viên
+> sang hệ thống của một chương trình khác.
 
-# Mở Swagger UI
-# http://localhost:8000/docs
-```
+**Nói rõ với đội:** dùng AI **không** bị trừ điểm. Không log mới bị.
 
-### Bước 5: Đọc hướng dẫn
+---
 
-📖 Mở **[Technical Guidebook](https://hailoc12.github.io/ai20k-technical-guidebook/)** và làm theo từng chương.
+## Bốn quy tắc không được phá
 
-## 📁 Cấu trúc dự án
+1. **Không commit `.env`.** Kiểm: `git check-ignore -v .env` phải có kết quả. Key lỡ lên GitHub thì **thu hồi key**, không phải xoá commit.
+2. **`git status` sạch không có nghĩa là đã commit hết.** Thứ bị `.gitignore` chặn không xuất hiện ở đâu cả. Phép kiểm đúng: `git ls-files | grep data` — phải thấy 4 file.
+3. **Không dùng dữ liệu sinh viên thật.** Đề cương công khai hoặc tự soạn giả lập.
+4. **Agent không tự công bố.** Báo cáo ở trạng thái `PENDING` tới khi có người duyệt. Buổi 07 dựng cơ chế chặn bằng code.
 
-```
-├── src/
-│   ├── agents/           # 🧠 LangGraph Agent
-│   │   ├── graph.py      #    State graph (nodes + edges)
-│   │   ├── state.py      #    State schema (TypedDict)
-│   │   ├── nodes/        #    Node functions
-│   │   └── tools/        #    Agent tools (@tool)
-│   ├── api/              # 🌐 FastAPI Backend
-│   │   └── routes.py     #    API endpoints
-│   ├── models/           # 📋 Pydantic schemas
-│   ├── services/         # 🔧 Business logic (LLM, etc.)
-│   ├── config.py         # ⚙️ Pydantic Settings
-│   └── main.py           # 🚀 App entry point
-├── tests/                # 🧪 pytest suite
-│   ├── test_agents/      #    Agent/graph tests
-│   └── test_api/         #    API endpoint tests
-├── scripts/              # 🔌 AI Logging Hooks
-│   ├── log_hook.py       #    Auto-log cho Claude/Cursor/Codex/Gemini/Copilot
-│   ├── log_antigravity.py#    Antigravity IDE prompt scanner
-│   ├── log_manual.py     #    Manual log cho ChatGPT / web tools
-│   ├── submit_log.py     #    Submit logs on git push
-│   └── setup_hooks.sh    #    One-time hook installer
-├── .claude/ .codex/ .cursor/ .gemini/  # Per-tool hook configs
-├── .agents/              # Antigravity rules + workflows
-├── .ai-log/              # 📊 AI usage logs (auto-generated)
-├── docs/
-│   ├── guide/            # 📖 Technical Guidebook (10 chapters)
-│   └── architecture_diagram.md
-├── eval/                 # 📊 Evaluation results
-├── presentation/         # 🎤 Demo Day slides
-├── .github/workflows/    # ⚡ CI/CD (GitHub Actions)
-├── .github/hooks/        # 🪝 Copilot hook config
-├── Dockerfile            # 🐳 Multi-stage build
-├── docker-compose.yml    # 🐙 Full stack orchestration
-└── README_boilerplate.md # 📝 README template cho đội của bạn
-```
+---
 
-## 📚 Technical Guidebook — 10 Chương
+## Nguồn
 
-| Chương | Nội dung | Thời gian |
-|---------|----------|-----------|
-| 1 | Lời mở đầu — Mục tiêu, cách sử dụng | 15 phút |
-| 2 | Khởi tạo dự án — Clone, setup, git workflow | 4 giờ |
-| 3 | Thiết kế kiến trúc — 3-tier, diagrams, ADR | 6 giờ |
-| 4 | **LangGraph Agent** — State, nodes, edges, tools, RAG | 8 giờ |
-| 5 | FastAPI — Routes, validation, error handling, streaming | 6 giờ |
-| 6 | Giao diện — Next.js + Streamlit quickstart | 6 giờ |
-| 7 | DevOps — Docker, CI/CD, deploy, logging | 6 giờ |
-| 8 | Kiểm thử — Unit test, integration test, RAGAS | 4 giờ |
-| 9 | Demo Day — 10 deliverables, checklist, tips | 2 giờ |
-| 10 | Tài nguyên — Khóa học, docs, BMAD method | tham khảo |
+| Thành phần | Nguồn |
+|---|---|
+| Khung dự án, `src/`, `tests/`, Docker, CI, AI logging hooks | [`hailoc12/ai20k-agent-template`](https://github.com/hailoc12/ai20k-agent-template) — template của AI20K, kế thừa cho The Odyssey |
+| Sổ tay kỹ thuật 15 chương | Technical Book AI20K Cohort 3, tải 26/09/2026 — nằm **ngoài** repo tại `../So_tay_ky_thuat/` |
+| Gates G1–G6, 10 deliverables, rubric 6 tiêu chí × 5 mức | Kế thừa từ AI20K. **Đầu mỗi cohort The Odyssey phải đối chiếu lại** — trọng số từng tiêu chí có thể khác |
+| Đề bài MT-01, rubric 6 tiêu chí, dữ liệu tập | Soạn cho khoá The Odyssey |
 
-📖 **Đọc online:** [hailoc12.github.io/ai20k-technical-guidebook](https://hailoc12.github.io/ai20k-technical-guidebook/)
-
-## 📋 10 Deliverables cho Demo Day
-
-| # | Deliverable | File vị trí | Template có sẵn |
-|---|-------------|-------------|:---:|
-| 1 | Source Code | `src/` | ✅ |
-| 2 | README.md | `README_boilerplate.md` → copy thành `README.md` | ✅ |
-| 3 | Architecture Diagram | `docs/architecture_diagram.md` | ✅ |
-| 4 | AI Logs | LangSmith (3 env vars) + Auto AI Usage Logging | ✅ |
-| 5 | Live URL | Deploy lên Render/Vercel | ⚡ CI/CD sẵn |
-| 6 | Video Demo | `presentation/` | 📝 |
-| 7 | Pitch Deck | `presentation/` | 📝 |
-| 8 | Development Journal | `JOURNAL.md` | ✅ |
-| 9 | Worklog | `WORKLOG.md` | ✅ |
-| 10 | Evaluation Evidence | `eval/` | 📝 |
-
-## 🛠 Tech Stack
-
-| Layer | Technology | Version |
-|-------|-----------|---------|
-| AI Agent | LangGraph + LangChain | Latest |
-| Backend | FastAPI + Uvicorn | 0.100+ |
-| LLM | OpenAI GPT-4o-mini | API |
-| Frontend | Next.js / Streamlit | 14+ / 1.30+ |
-| Database | SQLite (dev) / PostgreSQL (prod) | — |
-| DevOps | Docker + GitHub Actions | — |
-| Testing | pytest + pytest-asyncio | 8+ |
-
-## 📊 AI Usage Logging
-
-Template đã tích hợp sẵn auto-logging hooks cho 6 AI tools:
-
-| Tool | Cơ chế | Config |
-|------|--------|--------|
-| Claude Code | `.claude/settings.json` hooks | Tự động |
-| Cursor | `.cursor/hooks.json` | Tự động |
-| OpenAI Codex CLI | `.codex/hooks.json` | Tự động |
-| Gemini CLI | `.gemini/settings.json` | Tự động |
-| GitHub Copilot | `.github/hooks/hooks.json` | Tự động |
-| Antigravity IDE | Pre-push scan transcript | Tự động trên `git push` |
-
-Tất cả prompts và tool calls được log vào `.ai-log/session.jsonl` và tự động submit lên grading server mỗi khi `git push`.
-
-**ChatGPT / web tools khác** — log thủ công:
-```bash
-bash scripts/_pyrun.sh scripts/log_manual.py --tool chatgpt --prompt "What you asked"
-```
-
-> ⚠️ Chạy `bash scripts/setup_hooks.sh` một lần sau khi clone để cài pre-push hook.
-
-## 📖 Đọc Technical Guidebook
-
-**Online:** [hailoc12.github.io/ai20k-technical-guidebook](https://hailoc12.github.io/ai20k-technical-guidebook/)
-
-**Local (Hugo):**
-```bash
-# Cài Hugo Extended (macOS)
-brew install hugo-extended
-
-# Cài Hugo Extended (Windows)
-# winget install Hugo.Hugo.Extended
-
-# Clone guidebook repo (nằm cùng cấp với project)
-cd ..
-git clone https://github.com/hailoc12/ai20k-technical-guidebook.git
-cd ai20k-technical-guidebook
-
-# Chạy local server
-hugo server -D
-
-# Mở trình duyệt: http://localhost:1313
-```
-
-> 💡 Guidebook dùng theme [Hextra](https://imfing.github.io/hextra/) — Hugo Extended required.
-
-## 🔗 Liên kết
-
-- 📖 **Technical Guidebook:** [hailoc12.github.io/ai20k-technical-guidebook](https://hailoc12.github.io/ai20k-technical-guidebook/)
-- 🏫 **AI20K Program:** VinUni AI20K Build Phase
-- 👨‍🏫 **Mentor:** Đặng Hải Lộc
-
-## 📄 License
-
-MIT — Sử dụng tự do cho mục đích giáo dục.
+Phần `docs/guide/` của template (sổ tay bản 10 chương cũ) **đã bị xoá** khỏi repo này. Lý do và
+bảng lược–giữ đầy đủ: [`DA-LUOC.md`](DA-LUOC.md).
