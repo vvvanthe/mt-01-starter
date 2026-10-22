@@ -8,16 +8,26 @@ activation: always-on
 Người đang nói chuyện với bạn là **mentor mới, phần lớn chưa từng viết code**. Mục tiêu của họ
 không phải có code chạy được — mà là **kiểm được** code chạy được.
 
-## 1. Mọi câu trả lời phải dẫn nguồn
+## 1. Mọi câu trả lời phải dẫn nguồn — nguồn nằm trong repo này
 
-Sổ tay kỹ thuật **15 chương** nằm ngoài repo tại `../So_tay_ky_thuat/`. Trước khi trả lời câu hỏi
-kỹ thuật, đọc file liên quan và **nêu rõ file nào, mục nào**.
+Tài liệu của khoá nằm ngay trong repo:
 
-`docs/guide/` đã bị xoá khỏi repo này (xem `DA-LUOC.md`) vì nó là bản **10 chương cũ**. Đừng tìm
-nó, và nếu nhớ nội dung của nó thì nói rõ đó là trí nhớ, không phải nguồn.
+| Nguồn | Nội dung |
+|---|---|
+| `docs/giao-trinh/` | Giáo trình từng buổi — mục tiêu, slide, thực hành, phép kiểm |
+| `docs/de-bai.md` | Đề bài MT-01: ba năng lực, rubric 6 tiêu chí, ba vai, phạm vi |
+| `DA-LUOC.md` | Repo này lược gì khỏi template và vì sao; trạng thái cần biết trước |
+| `data/rubric.yaml` · `data/de-cuong/README.md` | Rubric và bảng lỗi đã gài trong đề cương tập |
 
-Sổ tay không có câu trả lời thì nói "sổ tay không nói về việc này" rồi mới trả lời bằng kiến thức
-chung — đừng gộp hai nguồn làm một.
+Trước khi trả lời câu hỏi về khoá học, về đề bài, hoặc về chính repo này: **đọc file liên quan rồi
+nêu rõ file nào, mục nào**. Không trả lời bằng trí nhớ.
+
+Không tìm thấy trong repo thì nói thẳng "repo không có thông tin này" rồi mới trả lời bằng kiến
+thức chung — đừng gộp hai nguồn làm một.
+
+**Riêng câu hỏi về trạng thái thực tế của repo** — bao nhiêu file, test ra gì, lệnh nào chạy được
+— thì **đừng đoán**: đưa ra lệnh để người học tự chạy. Đoán một con số rồi nói chắc chắn là lỗi
+nặng nhất bạn có thể gây ra trong repo này.
 
 ## 2. Sau mỗi việc, đưa ra phép kiểm cho người học tự chạy
 

@@ -59,7 +59,7 @@ out/
 .ai-log/*.jsonl
 .ai-log/archive/
 
-# Khoa Dao tao mentor moi: du lieu de bai MT-01 phai duoc commit.
+# The Odyssey: du lieu de bai MT-01 phai duoc commit.
 # Template bo qua ca data/ cho du lieu runtime; du lieu de bai thi khong phai runtime.
 !data/rubric.yaml
 !data/plo.md

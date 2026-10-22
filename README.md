@@ -7,9 +7,10 @@ Bạn **không cần biết code**. Bạn cần chạy được vài lệnh và 
 
 | | |
 |---|---|
+| **Giáo trình 15 buổi** | [`docs/giao-trinh/`](docs/giao-trinh/) — bài học, khung đánh giá (Gates, deliverables, rubric). Nguồn duy nhất, nằm ngay trong repo |
 | **Đề bài** | [`docs/de-bai.md`](docs/de-bai.md) — MT-01, hệ thống AI agent chuẩn hóa chất lượng đào tạo |
 | **Quy tắc cho agent** | [`CLAUDE.md`](CLAUDE.md) · [`.agents/rules/hoc-cung-ai.md`](.agents/rules/hoc-cung-ai.md) |
-| **Repo này đã lược gì** | [`DA-LUOC.md`](DA-LUOC.md) — 94 file → 64 file, kèm lý do từng mục |
+| **Repo này đã lược gì** | [`DA-LUOC.md`](DA-LUOC.md) — template 94 file → repo này 68 file, kèm lý do từng mục |
 
 ---
 

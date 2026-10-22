@@ -6,18 +6,29 @@ giữ nguyên file của nó, chỉ **xoá phần cả 15 buổi không dùng t�
 
 | | Template gốc | Repo này |
 |---|---|---|
-| Số file git theo dõi | 94 | **64** |
+| Số file git theo dõi | 94 | **68** |
 | Trong đó `docs/guide/` | 37 file · 436 KB · ~3/4 dung lượng | đã xoá |
 
 ## Đã xoá
 
 | Đã xoá | Số file | Vì sao |
 |---|---|---|
-| `docs/guide/` | 37 | Sổ tay bundled là bản **10 chương** cũ. Khoá này dùng bản **15 chương** ở `../So_tay_ky_thuat/`, và mọi prompt đều trỏ ra đó. Giữ hai bản sổ tay lệch nhau trong một repo là nguồn gây sai nghiêm trọng nhất: agent đọc bản cũ rồi trả lời rất tự tin. |
+| `docs/guide/` | 37 | Sổ tay kỹ thuật bundled. **Khoá The Odyssey dùng giáo trình riêng** ở `docs/giao-trinh/`, không dùng sổ tay làm tài liệu học. Giữ lại một bộ tài liệu song song mà không ai dạy theo là nguồn gây sai nghiêm trọng nhất: agent đọc nó rồi trả lời rất tự tin về thứ không có trong khoá. |
 | `docs/COHORT3_REPORT.md` | 1 | Báo cáo tổng hợp của BTC về Cohort 3 — tài liệu tham khảo, không dùng trong buổi nào. Bản online: [docs/COHORT3_REPORT.md](https://github.com/hailoc12/ai20k-agent-template/blob/main/docs/COHORT3_REPORT.md) |
 
 Hai mục trên chiếm **38/94 file** và khoảng **3/4 dung lượng** của template. Phần còn lại
-(94 − 38 = 56 file) cộng 8 file overlay = **64 file**.
+(94 − 38 = **56 file**) cộng **12 file thêm vào** = **68 file**:
+
+| Thêm vào | Số file |
+|---|---|
+| Quy tắc cho agent: `CLAUDE.md`, `.agents/rules/hoc-cung-ai.md` | 2 |
+| Bảng này: `DA-LUOC.md` | 1 |
+| Dữ liệu đề bài: `data/rubric.yaml`, `data/plo.md`, `data/de-cuong/` | 4 |
+| Đề bài: `docs/de-bai.md` | 1 |
+| Giáo trình: `docs/giao-trinh/` | 4 |
+
+`README.md` bị **ghi đè** (bản của khoá thay bản template) nên không cộng thêm file. Số 68 sẽ
+tăng khi giáo trình soạn xong buổi 03–15.
 
 ## Giữ lại — và buổi nào dùng
 
@@ -51,6 +62,7 @@ Hai file `setup_hooks.ps1` và `_pyrun.cmd` là bản Windows. Mentor dùng Wind
 
 | Thêm | Vì sao |
 |---|---|
+| `docs/giao-trinh/` | **Giáo trình từng buổi** — tài liệu học chính của khoá |
 | `docs/de-bai.md` | Đề bài xuyên suốt MT-01. Nguồn duy nhất nằm ở thư mục giáo trình, script copy vào |
 | `data/rubric.yaml` | Rubric 6 tiêu chí — **dữ liệu riêng** của đề, thứ khiến hệ thống không phải AI wrapper |
 | `data/plo.md`, `data/de-cuong/` | PLO mẫu và đề cương tập **có lỗi cố ý ở cả 6 tiêu chí** |
@@ -71,8 +83,9 @@ liệu với code ở buổi 02.
 | `make test` ra **2 passed, 3 errors**: có `pytest-asyncio` trong `requirements.txt` nhưng không file nào đặt `asyncio_mode` | `make test` | Học viên **tự sửa** ở buổi 02 — thêm `pytest.ini` 3 dòng |
 | `.github/workflows/ci.yml` khai `pull_request: branches: [main]` → **PR nhắm vào `develop` không kích hoạt CI** | `grep -A5 "^on:" .github/workflows/ci.yml` | Biết để không kết luận "CI hỏng" |
 
-`README.md` của template còn mô tả `docs/guide/` và "Technical Guidebook 10 chương" — hai thứ repo
-này đã xoá. Đó là hệ quả của việc lược, và nó được ghi lại ở đây chứ không để im lặng.
+`README.md` gốc của template mô tả `docs/guide/` và "Technical Guidebook 10 chương" — hai thứ repo
+này đã xoá, nên README đó đã được viết lại. Giáo trình của The Odyssey ở `docs/giao-trinh/` là tài
+liệu học duy nhất; không cần đọc sổ tay kỹ thuật của chương trình tiền nhiệm.
 
 ## Một chỗ **đã sửa**, không để làm bài tập
 
