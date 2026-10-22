@@ -138,9 +138,10 @@ bypass bằng `--no-verify`: push được nhưng log không được submit.
 | Thành phần | Nguồn |
 |---|---|
 | Khung dự án, `src/`, `tests/`, Docker, CI, AI logging hooks | [`hailoc12/ai20k-agent-template`](https://github.com/hailoc12/ai20k-agent-template) — template của AI20K, kế thừa cho The Odyssey |
-| Sổ tay kỹ thuật 15 chương | Technical Book AI20K Cohort 3, tải 26/09/2026 — nằm **ngoài** repo tại `../So_tay_ky_thuat/` |
+| Giáo trình 15 buổi ở [`docs/giao-trinh/`](docs/giao-trinh/) | Soạn cho The Odyssey. **Đây là tài liệu học duy nhất của khoá** — không cần mở tài liệu nào bên ngoài |
 | Gates G1–G6, 10 deliverables, rubric 6 tiêu chí × 5 mức | Kế thừa từ AI20K. **Đầu mỗi cohort The Odyssey phải đối chiếu lại** — trọng số từng tiêu chí có thể khác |
 | Đề bài MT-01, rubric 6 tiêu chí, dữ liệu tập | Soạn cho khoá The Odyssey |
 
-Phần `docs/guide/` của template (sổ tay bản 10 chương cũ) **đã bị xoá** khỏi repo này. Lý do và
-bảng lược–giữ đầy đủ: [`DA-LUOC.md`](DA-LUOC.md).
+Phần `docs/guide/` của template **đã bị xoá** khỏi repo này: đó là một bộ tài liệu song song mà
+khoá không dạy theo, và giữ hai bộ lệch nhau trong một repo là cách nhanh nhất để agent trả lời
+sai rất tự tin. Lý do và bảng lược–giữ đầy đủ: [`DA-LUOC.md`](DA-LUOC.md).
