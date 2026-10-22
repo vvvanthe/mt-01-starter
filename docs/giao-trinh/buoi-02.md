@@ -28,7 +28,7 @@ Python 3.12 (hoặc 3.11), Git, `gh` đã đăng nhập. Agent coding đã cài.
 | # | Tiêu đề slide | Nội dung trên slide | Người trình bày nói gì |
 |---|---|---|---|
 | 1 | Hôm nay không viết logic, hôm nay dựng nền | Bốn thứ phải có cuối buổi: môi trường chạy được · `.env` không bị commit · Swagger mở được · PR đầu đã merge. | Mentor mới hay coi buổi setup là buổi phụ. Thực tế đây là buổi quyết định tuần 4 của đội có deploy được không. Câu "trên máy em chạy được" bắt đầu từ chỗ setup làm tắt. |
-| 2 | Không tự tạo repo | Repo của đội do hệ thống **sinh sẵn** từ template, nằm trong org của khoá. Repo đội tự tạo ngoài org **không bắn webhook về hệ thống chấm** và không được tính là bài nộp. | Đây là lỗi mất điểm oan và rất hay gặp. Mentor phải biết để chặn ngay tuần 1. Chưa thấy repo thì báo BTC, đừng tự tạo. |
+| 2 | Một đội, một repo — không ai tự tạo repo riêng | Repo đội `mt-01-the-odyssey` đã dựng từ template ở buổi 01, nằm trong org của khoá. Bốn người là **collaborator** trên cùng repo đó. Repo tự tạo ngoài org **không bắn webhook về hệ thống chấm** và không được tính là bài nộp. | Nhắc lại luật buổi 01: một đội một repo, và không ai tự merge PR của mình. Buổi này mỗi người dựng **môi trường của mình** trên cùng repo đó — nên bốn người sẽ gặp bốn kiểu lỗi máy khác nhau, đúng như tuần 2 của đội thật. Ai hỏi "sao không mỗi người một repo": vì cái khó của GitHub không phải gõ lệnh, mà là bốn người sửa cùng một repo không đè lên nhau. |
 | 3 | Template chính thức, đã lược: 94 → 68 file | **Giữ:** `src/agents/` (buổi 04) · `src/api/` `src/models/` (buổi 08) · `tests/` (buổi 10) · Docker, CI, `ruff.toml` (buổi 12) · `scripts/` + 6 cấu hình hook (buổi 02) · `ARCHITECTURE.md` `JOURNAL.md` `WORKLOG.md` (deliverable 3, 8, 9). **Xoá:** `docs/guide/` 37 file và `docs/COHORT3_REPORT.md`. | Nói rõ: không viết lại khung, đây **là** template thật, chỉ xoá hai mục cả 15 buổi không dùng. Vì sao xoá `docs/guide/`: đó là một bộ tài liệu **song song** mà khoá này không dạy theo — khoá dùng giáo trình riêng ở `docs/giao-trinh/`. Giữ hai bộ tài liệu lệch nhau trong một repo là cách nhanh nhất để agent trả lời sai rất tự tin về thứ không có trong khoá. Bảng lược-giữ đầy đủ: `DA-LUOC.md` trong repo. |
 | 4 | Chọn tầng khởi đầu | **Tầng 1 — prototype**: tuần 1–2, chưa chắc user cần gì, cần thứ cho 5 người xem trong 48 giờ. Không server, không Docker. **Tầng 2 — repo của đội**: đã có USP và ≥5 feedback, build nghiêm túc. | Trả lời câu hỏi số 2 của đội. Đội dựng full Docker/CI tuần 1 khi đề chưa validate thì mất 3 tuần đầu "set up hạ tầng". Ngược lại đội đã chắc đề mà vẫn code prototype tay thì demo ngày bị lỗi dưới tải. Chuyển tầng thì mang theo đúng hai thứ: câu hỏi user thật và USP đã validate. |
 | 5 | Môi trường, và cách đọc thông báo lỗi | `python3 -m venv .venv` → `source .venv/bin/activate` → `pip install -r requirements.txt`. **Đọc lỗi:** tìm dòng `ERROR`, hoặc dòng cuối của khối `Traceback` — **bỏ qua `[notice]` và `WARNING`**. | Giải thích venv bằng một câu: nó là hộp thư viện riêng cho dự án này, để dự án khác không phá nó và nó không phá máy bạn. Dấu hiệu quên bật venv: `No module named ...`. Về cách đọc lỗi, nói thẳng một chỗ dễ sai: "đọc dòng cuối" chỉ đúng với Traceback của Python — pip in `[notice]` **sau** dòng `ERROR`, nên dòng cuối lại là lời khuyên nâng cấp pip. Lab bước 2 sẽ gặp đúng trường hợp đó. |
@@ -44,27 +44,34 @@ Python 3.12 (hoặc 3.11), Git, `gh` đã đăng nhập. Agent coding đã cài.
 
 ## Thực hành (60 phút) — Dựng nền, và tìm chỗ tài liệu nói khác code
 
-**Sau lab, bạn có:** repo riêng chạy được, `.env` an toàn, Swagger mở được, AI logging đã cài,
-`make test` xanh, một PR đã merge, và ba dòng `JOURNAL.md` ghi chỗ tài liệu lệch code bạn tự tìm ra.
+**Sau lab, bạn có:** repo đội chạy được **trên máy bạn**, `.env` an toàn, Swagger mở được, AI
+logging đã cài, `make test` xanh trên `main` của đội, và ba dòng `JOURNAL.md` ghi chỗ tài liệu lệch
+code bạn tự tìm ra.
 
-### Bước 1 — Repo riêng từ template (6')
+> **Vẫn một đội, một repo** — repo `mt-01-the-odyssey` dựng ở buổi 01. Buổi này mỗi người dựng
+> **môi trường của mình** trên cùng repo đó, nên bốn người sẽ gặp bốn kiểu lỗi máy khác nhau. Đó
+> là chủ ý: tuần 2 đội cũng sẽ như vậy.
 
-```
-1. Mở link mt-01-starter người dạy gửi
-2. "Use this template" → "Create a new repository"
-3. Tên: mt-01-<tên-bạn> · Private · Create
-```
+### Bước 1 — Lấy bản mới nhất của repo đội (6')
 
-Đừng bấm **Fork**. Template cho bạn repo độc lập với lịch sử commit sạch từ commit đầu của bạn.
+Đã clone ở buổi 01 thì không clone lại — lấy phần người khác đã merge:
 
 ```bash
-gh repo clone <TÊN-BẠN>/mt-01-<tên-bạn>
-cd mt-01-<tên-bạn>
-ls docs/giao-trinh/ docs/de-bai.md   # giáo trình và đề bài nằm trong repo
+cd mt-01-the-odyssey
+git switch main && git pull
+ls docs/doi-ngu/                     # phải thấy file của cả bốn người
 ```
 
-**Phép kiểm:** `git remote -v` trỏ về repo của bạn. Mở `DA-LUOC.md` đọc 2 phút — nó nói repo này
-đã lược gì khỏi template và vì sao.
+Chưa clone (vắng buổi 01):
+
+```bash
+gh repo clone <ORG>/mt-01-the-odyssey
+cd mt-01-the-odyssey
+```
+
+**Phép kiểm:** `git remote -v` trỏ về repo đội, và `git log --oneline | head -5` thấy commit của
+người khác — không chỉ của bạn. Mở `DA-LUOC.md` đọc 2 phút: nó nói repo này đã lược gì khỏi
+template và vì sao.
 
 ### Bước 2 — Làm theo README, và gặp lỗi thật (10') ⭐
 
@@ -208,8 +215,15 @@ khác nhau và cách xử lý khác nhau hoàn toàn:
 make test
 ```
 
-**2 passed, 3 errors.** Template chính thức có test đỏ ngay khi vừa clone. Lần này bạn **sửa** nó,
-với agent, theo đúng quy tắc trong `.agents/rules/hoc-cung-ai.md`:
+**2 passed, 3 errors.** Template chính thức có test đỏ ngay khi vừa clone. **Cả bốn người đều
+chạy** và đều phải thấy đúng con số đó trước khi đi tiếp — ai ra kết quả khác thì môi trường của
+người đó chưa đúng, gỡ ngay.
+
+> **Chia việc, vì một repo chỉ cần một bản sửa.** Một cặp làm bản sửa và mở PR; cặp còn lại
+> **review**. Cặp review không được xem lời giải trước — họ phải tự đọc `requirements.txt` và tự
+> hỏi "repo này có file cấu hình pytest nào chưa" rồi mới đọc PR. Buổi sau đổi vai.
+
+Cặp làm bản sửa thì làm **cùng agent**, theo đúng quy tắc trong `.agents/rules/hoc-cung-ai.md`:
 
 ```
 make test cho 2 passed, 3 errors. Dòng lỗi nói: "requested an async fixture 'client', with no
@@ -234,15 +248,26 @@ make test                  # phải ra 5 passed
 ruff check src/ tests/     # phải ra All checks passed — CI cũng chạy lệnh này
 ```
 
-**Đạt khi** `5 passed`. Ba dòng cấu hình đổi test từ đỏ sang xanh, và điểm cần rút ra là: **CI xanh
-là thứ bạn làm ra, không phải thứ bạn được phát.** Đội nào nhận template rồi để test đỏ suốt 6 tuần
+**Đạt khi** `5 passed` trên máy cặp làm bản sửa — và sau khi PR merge, **cả bốn người** `git pull`
+rồi chạy lại `make test` cũng ra `5 passed`. Đây là lần đầu đội thấy một bản sửa đi từ máy người
+này sang máy người khác, và nó đi qua PR, không qua Zalo. Điểm cần rút ra: **CI xanh là thứ bạn làm
+ra, không phải thứ bạn được phát.** Đội nào nhận template rồi để test đỏ suốt 6 tuần
 thì tuần 6 không ai dám sửa gì nữa, vì không còn cách phân biệt lỗi mới với lỗi cũ.
 
 ### Bước 8 — PR đầu tiên, và một cái bẫy trong CI (4')
 
+Lần này repo đội có thêm nhánh `develop` — nhánh tích hợp của đội, `main` để dành cho bản đã
+duyệt. Một người tạo, cả đội dùng:
+
 ```bash
-git checkout -b develop && git push -u origin develop
-git checkout -b chore/setup-buoi-02
+git switch main && git pull
+git switch -c develop && git push -u origin develop     # chỉ MỘT người làm, một lần
+```
+
+Rồi cặp làm bản sửa mở PR vào `develop`:
+
+```bash
+git switch -c chore/setup-buoi-02
 git add JOURNAL.md pytest.ini
 git commit -m "chore: cau hinh pytest asyncio; journal buoi 02"
 git push -u origin chore/setup-buoi-02
@@ -259,11 +284,12 @@ Nó khai `pull_request: branches: [main]` — PR nhắm vào `develop` không ch
 mới thấy CI chạy, vì `push: branches: [main, develop]` có bắt `develop`:
 
 ```bash
-gh pr merge --squash --delete-branch
+gh pr merge <số> --squash --delete-branch   # vẫn luật buổi 01: người khác merge, không phải tác giả
 gh run list --limit 3
 ```
 
-**Đạt khi** `gh run list` có một lần chạy **thành công** sau khi merge.
+**Đạt khi** `gh run list` có một lần chạy **thành công** sau khi merge, và cả bốn người đã
+`git pull` để `make test` ra `5 passed` trên máy mình.
 
 Ghi một dòng `JOURNAL.md` về bẫy này. Đội sẽ mở PR, thấy không có CI, rồi kết luận "CI hỏng rồi
 anh" — trong khi CI chỉ không được cấu hình chạy cho nhánh đích đó. **Không có tích xanh không
@@ -301,13 +327,13 @@ Ghép cặp. A làm **thành viên đội**, B làm **mentor**. 10 phút rồi �
 
 ## Tiêu chí đạt buổi 02
 
-- [ ] Repo riêng từ template, clone về máy, có nhánh `develop`
+- [ ] Repo đội đã `git pull` về máy bạn; đội có nhánh `develop`
 - [ ] `pip install -r requirements.txt` xong; `make run` chạy; `curl localhost:8000/health` ra `ok`
 - [ ] `git check-ignore -v .env` có kết quả và `git status` **không** thấy `.env`
 - [ ] `git ls-files | grep data` thấy **4 file** — và giải thích được vì sao `git status` sạch mà vẫn có thể thiếu file
 - [ ] `pre-push` hook đã cài
-- [ ] `make test` ra **5 passed** sau khi thêm `pytest.ini`; `ruff check` xanh
-- [ ] `JOURNAL.md` ghi **ba** chỗ lệch: lệnh cài trong README · số chương sổ tay · CI không chạy cho PR nhắm vào `develop`
+- [ ] `make test` ra **5 passed** trên máy **bạn** sau khi `git pull` bản sửa `pytest.ini`; `ruff check` xanh
+- [ ] `JOURNAL.md` ghi **ba** chỗ lệch: lệnh cài trong README · `make test` đỏ ngay khi clone · CI không chạy cho PR nhắm vào `develop`
 - [ ] Agent đã trả lời kèm đường dẫn file, và bạn đã **tự mở file đó kiểm lại**
 - [ ] PR merge vào `develop`, `gh run list` có một lần chạy thành công
 - [ ] Bài tập chéo ≥ 2/3
